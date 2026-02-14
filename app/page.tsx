@@ -1,76 +1,21 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
 
-export default function SanValentinPro() {
+export default function SanValentinPage() {
   const [openLetter, setOpenLetter] = useState(false);
   const [accepted, setAccepted] = useState(false);
-  const [hearts, setHearts] = useState([]);
-  const [musicOn, setMusicOn] = useState(false);
-
-  // Generador optimizado de corazones (máximo 25 en pantalla)
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setHearts((prev) => {
-        const newHeart = {
-          id: Math.random(),
-          left: Math.random() * 100,
-          size: Math.random() * 20 + 15,
-          duration: Math.random() * 4 + 6,
-        };
-        const updated = [...prev, newHeart];
-        return updated.slice(-25);
-      });
-    }, 500);
-
-    return () => clearInterval(interval);
-  }, []);
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-rose-300 via-pink-400 to-fuchsia-500 flex flex-col items-center justify-center p-6 text-center">
-
-      {/* 🎵 Música */}
-      {musicOn && (
-        <audio autoPlay loop>
-          <source src="/yo-no-se-manana.mp3" type="audio/mpeg" />
-        </audio>
-      )}
-
-      {!musicOn && (
-        <button
-          onClick={() => setMusicOn(true)}
-          className="absolute top-4 right-4 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full shadow-lg text-rose-600 font-semibold"
-        >
-          🎵 Activar música
-        </button>
-      )}
-
-      {/* 💖 Corazones flotando */}
-      <AnimatePresence>
-        {hearts.map((heart) => (
-          <motion.div
-            key={heart.id}
-            initial={{ y: "100vh", opacity: 1 }}
-            animate={{ y: "-10vh", opacity: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: heart.duration, ease: "linear" }}
-            style={{
-              position: "absolute",
-              left: `${heart.left}%`,
-              fontSize: heart.size,
-            }}
-          >
-            💖
-          </motion.div>
-        ))}
-      </AnimatePresence>
-
-      {/* ✨ Título */}
+    <div className="min-h-screen bg-gradient-to-br from-pink-100 via-rose-200 to-pink-300 flex flex-col items-center justify-center p-6 text-center">
+      
       <motion.h1
-        initial={{ opacity: 0, scale: 0.7 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1 }}
-        className="text-5xl md:text-7xl font-extrabold text-white drop-shadow-2xl mb-6"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="text-4xl md:text-6xl font-bold text-rose-700 mb-6"
       >
         Feliz San Valentín ❤️
       </motion.h1>
@@ -78,77 +23,74 @@ export default function SanValentinPro() {
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
-        className="text-xl md:text-2xl text-white max-w-2xl mb-10"
+        transition={{ delay: 0.5, duration: 1 }}
+        className="text-lg md:text-xl text-rose-800 max-w-2xl mb-8"
       >
-        No sé qué pasará mañana…
-        pero hoy sé que quiero vivirlo contigo.
+        Esta página es solo para ti. Porque incluso a la distancia,
+        sigues siendo mi persona favorita en el mundo.
       </motion.p>
 
-      {/* 💌 Carta */}
-      <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl max-w-xl w-full p-8">
-        {!openLetter ? (
-          <button
-            onClick={() => setOpenLetter(true)}
-            className="bg-rose-600 hover:bg-rose-700 text-white px-8 py-4 rounded-3xl text-lg transition"
-          >
-            Abrir mi carta 💌
-          </button>
-        ) : (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="space-y-4 text-rose-900 text-lg"
-          >
-            <p>
-              Tal vez no sé qué pasará mañana…
-              pero sí sé que cada día contigo es un regalo.
-            </p>
-            <p>
-              Gracias por quedarte, por elegirme,
-              por hacer que incluso la distancia se sienta pequeña.
-            </p>
-            <p className="font-semibold text-xl">
-              Te elijo hoy… y siempre 💖
-            </p>
-          </motion.div>
-        )}
-      </div>
+      <Card className="rounded-2xl shadow-xl bg-white/80 backdrop-blur-md max-w-xl w-full">
+        <CardContent className="p-6">
+          {!openLetter ? (
+            <Button
+              onClick={() => setOpenLetter(true)}
+              className="rounded-2xl text-lg px-6 py-4"
+            >
+              Abrir mi carta 💌
+            </Button>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="space-y-4"
+            >
+              <p className="text-rose-900 text-base md:text-lg">
+                Desde que llegaste a mi vida, todo tiene más sentido.
+                Gracias por cada llamada, cada mensaje y cada momento compartido.
+                No importa la distancia, mi corazón siempre encuentra el camino hacia ti.
+              </p>
+              <p className="text-rose-900 text-base md:text-lg">
+                Prometo que pronto celebraremos juntos,
+                pero mientras tanto, quiero que sepas que te amo más cada día.
+              </p>
+            </motion.div>
+          )}
+        </CardContent>
+      </Card>
 
-      {/* 💍 Propuesta */}
-      <div className="mt-12">
+      <div className="mt-10">
         {!accepted ? (
           <>
-            <p className="text-2xl text-white mb-6 font-semibold drop-shadow-lg">
+            <p className="text-xl text-rose-800 mb-4">
               ¿Quieres seguir escribiendo nuestra historia conmigo?
             </p>
-
-            <div className="flex gap-6 justify-center">
-              <button
+            <div className="flex gap-4 justify-center">
+              <Button
                 onClick={() => setAccepted(true)}
-                className="bg-white text-rose-600 px-10 py-5 rounded-3xl text-xl font-semibold shadow-lg hover:scale-105 transition"
+                className="rounded-2xl px-8 py-4 text-lg"
               >
                 Sí, siempre 💖
-              </button>
+              </Button>
 
-              <motion.button
-                whileHover={{ x: 40 }}
-                className="border-2 border-white text-white px-10 py-5 rounded-3xl text-xl"
+              <Button
+                variant="outline"
+                className="rounded-2xl px-8 py-4 text-lg"
               >
                 No 😢
-              </motion.button>
+              </Button>
             </div>
           </>
         ) : (
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            transition={{ type: "spring", stiffness: 120 }}
-            className="flex flex-col items-center gap-6"
+            transition={{ type: "spring", stiffness: 200 }}
+            className="flex flex-col items-center gap-4"
           >
-            <Heart className="w-28 h-28 text-white fill-white animate-pulse" />
-            <p className="text-4xl font-bold text-white drop-shadow-2xl">
-              Eres el amor de mi vida 💍✨
+            <Heart className="w-16 h-16 text-rose-600 fill-rose-600" />
+            <p className="text-2xl font-semibold text-rose-700">
+              Sabía que dirías que sí 💍✨
             </p>
           </motion.div>
         )}
